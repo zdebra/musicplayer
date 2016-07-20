@@ -1,5 +1,8 @@
 import React from 'react';
 import AudioService from './../audio/audio';
+import Button from 'react-bootstrap/lib/Button';
+import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
+import ProgressBar from 'react-bootstrap/lib/ProgressBar';
 
 export default class MainFrame extends React.Component {
 
@@ -12,10 +15,19 @@ export default class MainFrame extends React.Component {
             "http://localhost:3000/music/pz",
             "http://localhost:3000/music/vagina"
         ]);
-        
-        
 
+        this.state = {progress: this.audioService.getProgress()};
+        this.tick = this.tick.bind(this);
     }
+
+    componentDidMount() {
+        setInterval(this.tick,250);
+    }
+
+    tick() {
+        this.setState({progress: this.audioService.getProgress()});
+    }
+
 
     pause() {
         this.audioService.pause();
@@ -38,13 +50,22 @@ export default class MainFrame extends React.Component {
     }
 
     render() {
+/*
+        var p = 0;
+        setInterval(()=> {
+            p = this.audioService.getProgress();
+        },500);
+*/
         return(
             <div>
-                <button onClick={this.pause.bind(this)}>Pause</button>
-                <button onClick={this.play.bind(this)}>Play</button>
-                <button onClick={this.stop.bind(this)}>Stop</button>
-                <button onClick={this.next.bind(this)}>Next</button>
-                <button onClick={this.prev.bind(this)}>Prev</button>
+                <ProgressBar now={this.state.progress} label={`${this.state.progress}%`} />
+                <ButtonToolbar>
+                    <Button bsStyle="primary" onClick={this.pause.bind(this)}>Pause</Button>
+                    <Button bsStyle="primary" onClick={this.play.bind(this)}>Play</Button>
+                    <Button bsStyle="primary" onClick={this.stop.bind(this)}>Stop</Button>
+                    <Button bsStyle="primary" onClick={this.next.bind(this)}>Next</Button>
+                    <Button bsStyle="primary" onClick={this.prev.bind(this)}>Prev</Button>
+                </ButtonToolbar>
             </div>
         );
     }

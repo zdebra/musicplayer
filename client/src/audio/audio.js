@@ -8,18 +8,18 @@ export default class AudioService {
         this.sourceNode = null;
         this.buffer = null;
 
-        this.paused = false;
-        this.pausedAt = null;
-        this.stopped = false;
+        this.paused = true;
+        this.stopped = true;
         this.repeat = false;
         this.autoplay = false;
         this.volume = 1;
-        this.startedAt = null;
         this.shuffle = false;
 
         this.songIndex = 0;
         this.songCount = null;
 
+        this.elapsed = 0;
+        this.lastCalculated = 0;
 
         try {
 
@@ -32,12 +32,23 @@ export default class AudioService {
             if(this.autoplay) {
                 this.load(this.songsURIs[this.songIndex]);
             }
+            setInterval(() => {
+                this.loop();
+            },125);
 
         }
         catch(e) {
             console.log(e);
         }
 
+    }
+
+    loop() {
+        var now = Date.now();
+        if(!this.paused) {
+            this.elapsed += now - this.lastCalculated;
+        }
+        this.lastCalculated = now;
     }
 
 
@@ -76,17 +87,18 @@ export default class AudioService {
             this.sourceNode = this.context.createBufferSource();
             this.sourceNode.connect(this.context.destination);
             this.sourceNode.buffer = this.buffer;
+
+
+            if (this.paused) {
+                this.sourceNode.start(0, this.getCurrentTime());
+            }
+            else {
+                this.sourceNode.start(0);
+            }
+
             this.paused = false;
             this.stopped = false;
 
-            if (this.pausedAt) {
-                this.startedAt = Date.now() - this.pausedAt;
-                this.sourceNode.start(0, this.pausedAt / 1000);
-            }
-            else {
-                this.startedAt = Date.now();
-                this.sourceNode.start(0);
-            }
         }
 
     }
@@ -117,15 +129,37 @@ export default class AudioService {
     stop() {
         this.sourceNode.stop();
         this.paused = false;
-        this.pausedAt = null;
         this.stopped = true;
+        this.counter = 0;
 
     }
 
     pause() {
+
         this.sourceNode.stop(0);
-        this.pausedAt = Date.now() - this.startedAt;
         this.paused = true;
+    }
+
+    getProgress() {
+        if(this.buffer === null) {
+            return 0;
+        }
+
+        var percent = (this.getCurrentTime()/this.getDuration())*100;
+
+        console.log(percent);
+        return percent;
+    }
+
+    getDuration() {
+        if(this.buffer === null) {
+            return 0;
+        }
+        return this.buffer.duration;
+    }
+
+    getCurrentTime() {
+        return this.elapsed/1000;
     }
 
 

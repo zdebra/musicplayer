@@ -7,9 +7,10 @@
     "watch-js": "watchify src/app.jsx -o build/build.js -t [ babelify --presets [ es2015 react ] ] --debug --verbose"
   },
   "dependencies": {
+    "node-rest-client": "^2.0.1",
     "react": "^15.2.0",
-    "react-dom": "^15.2.0",
-    "node-rest-client": "^2.0.1"
+    "react-bootstrap": "^0.29.5",
+    "react-dom": "^15.2.0"
   },
   "devDependencies": {
     "babelify": "^7.3.0",
