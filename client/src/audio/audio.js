@@ -29,7 +29,9 @@ export default class AudioService {
 
             window.AudioContext = window.AudioContext||window.webkitAudioContext;
             this.context = new AudioContext();
-            this.load(this.songsURIs[this.songIndex]);
+            if(this.autoplay) {
+                this.load(this.songsURIs[this.songIndex]);
+            }
 
         }
         catch(e) {
@@ -67,21 +69,25 @@ export default class AudioService {
 
     play() {
 
-        this.sourceNode = this.context.createBufferSource();
-        this.sourceNode.connect(this.context.destination);
-        this.sourceNode.buffer = this.buffer;
-        this.paused = false;
-        this.stopped = false;
+        if(this.buffer===null) {
+            this.load(this.songsURIs[this.songIndex]);
+        } else {
 
-        if (this.pausedAt) {
-            this.startedAt = Date.now() - this.pausedAt;
-            this.sourceNode.start(0, this.pausedAt / 1000);
-        }
-        else {
-            this.startedAt = Date.now();
-            this.sourceNode.start(0);
-        }
+            this.sourceNode = this.context.createBufferSource();
+            this.sourceNode.connect(this.context.destination);
+            this.sourceNode.buffer = this.buffer;
+            this.paused = false;
+            this.stopped = false;
 
+            if (this.pausedAt) {
+                this.startedAt = Date.now() - this.pausedAt;
+                this.sourceNode.start(0, this.pausedAt / 1000);
+            }
+            else {
+                this.startedAt = Date.now();
+                this.sourceNode.start(0);
+            }
+        }
 
     }
 
