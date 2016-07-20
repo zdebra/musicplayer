@@ -44,6 +44,11 @@ export default class AudioService {
     }
 
     loop() {
+
+        if(this.buffer !== null && this.getCurrentTime() >= this.getDuration()) {
+            this.next();
+        }
+
         var now = Date.now();
         if(!this.paused) {
             this.elapsed += now - this.lastCalculated;
@@ -61,14 +66,6 @@ export default class AudioService {
             this.context.decodeAudioData(request.response, (buffer) => {
                 this.buffer = buffer;
                 this.play();
-
-                // on song end
-                this.sourceNode.onended = () => {
-                    if(!this.paused && !this.stopped) {
-                        this.next();
-                    }
-                }
-
             }, (e) => {
                 console.log('onBufferError', e);
             });
@@ -90,7 +87,7 @@ export default class AudioService {
 
 
             if (this.paused) {
-                this.sourceNode.start(0, this.getCurrentTime());
+                this.sourceNode.start(0, this.getCurrentTime()/1000);
             }
             else {
                 this.sourceNode.start(0);
@@ -130,14 +127,14 @@ export default class AudioService {
         this.sourceNode.stop();
         this.paused = false;
         this.stopped = true;
-        this.counter = 0;
+        this.elapsed = 0;
 
     }
 
     pause() {
-
-        this.sourceNode.stop(0);
         this.paused = true;
+        this.sourceNode.stop(0);
+
     }
 
     getProgress() {
@@ -147,7 +144,6 @@ export default class AudioService {
 
         var percent = (this.getCurrentTime()/this.getDuration())*100;
 
-        console.log(percent);
         return percent;
     }
 
@@ -155,11 +151,17 @@ export default class AudioService {
         if(this.buffer === null) {
             return 0;
         }
-        return this.buffer.duration;
+        return this.buffer.duration*1000;
     }
 
     getCurrentTime() {
-        return this.elapsed/1000;
+        return this.elapsed;
+    }
+
+    jumpTo(value) {
+        this.pause();
+        this.elapsed = value;
+        this.play();
     }
 
 

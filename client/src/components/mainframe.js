@@ -49,13 +49,12 @@ export default class MainFrame extends React.Component {
         this.audioService.prev();
     }
 
+    further() {
+        this.audioService.jumpTo(this.audioService.getDuration()*0.95);
+    }
+
     render() {
-/*
-        var p = 0;
-        setInterval(()=> {
-            p = this.audioService.getProgress();
-        },500);
-*/
+
         return(
             <div>
                 <ProgressBar now={this.state.progress} label={`${this.state.progress}%`} />
@@ -65,6 +64,7 @@ export default class MainFrame extends React.Component {
                     <Button bsStyle="primary" onClick={this.stop.bind(this)}>Stop</Button>
                     <Button bsStyle="primary" onClick={this.next.bind(this)}>Next</Button>
                     <Button bsStyle="primary" onClick={this.prev.bind(this)}>Prev</Button>
+                    <Button bsStyle="primary" onClick={this.further.bind(this)}>Further</Button>
                 </ButtonToolbar>
             </div>
         );
