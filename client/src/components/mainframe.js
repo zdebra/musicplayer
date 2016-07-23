@@ -3,6 +3,7 @@ import AudioService from './../audio/audio';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import ProgressBar from 'react-bootstrap/lib/ProgressBar';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 export default class MainFrame extends React.Component {
 
@@ -49,8 +50,13 @@ export default class MainFrame extends React.Component {
         this.audioService.prev();
     }
 
-    further() {
-        this.audioService.jumpTo(this.audioService.getDuration()*0.95);
+    playPause() {
+        if(this.audioService.stopped || this.audioService.paused) {
+            this.audioService.play();
+        }
+        else {
+            this.audioService.pause();
+        }
     }
 
     progressClick(e) {
@@ -71,16 +77,21 @@ export default class MainFrame extends React.Component {
             'marginRight': '100px'
         }
 
+        var bLabel = (this.audioService.stopped || this.audioService.paused) ? "play" : "pause";
+
         return(
+
             <div>
                 <ProgressBar now={this.state.progress} bsStyle="info" onClick={this.progressClick.bind(this)}/>
                 <ButtonToolbar>
-                    <Button bsStyle="primary" onClick={this.pause.bind(this)}>Pause</Button>
-                    <Button bsStyle="primary" onClick={this.play.bind(this)}>Play</Button>
-                    <Button bsStyle="primary" onClick={this.stop.bind(this)}>Stop</Button>
-                    <Button bsStyle="primary" onClick={this.next.bind(this)}>Next</Button>
-                    <Button bsStyle="primary" onClick={this.prev.bind(this)}>Prev</Button>
-                    <Button bsStyle="primary" onClick={this.further.bind(this)}>Further</Button>
+                    <ButtonGroup bsSize="xsmall">
+                        <Button onClick={this.pause.bind(this)}>Pause</Button>
+                        <Button onClick={this.play.bind(this)}>Play</Button>
+                        <Button onClick={this.stop.bind(this)}>Stop</Button>
+                        <Button onClick={this.next.bind(this)}>Next</Button>
+                        <Button onClick={this.prev.bind(this)}>Prev</Button>
+                        <Button onClick={this.playPause.bind(this)}>{bLabel}</Button>
+                    </ButtonGroup>
                 </ButtonToolbar>
                 <div style={divStyle}>
                     <ProgressBar now={this.state.progress} bsStyle="info" onClick={this.progressClick.bind(this)}/>
