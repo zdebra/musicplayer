@@ -166,7 +166,9 @@ export default class AudioService {
     }
 
     jumpTo(value) {
-        this.pause();
+        if(this.buffer!==null) {
+            this.pause();
+        }
         this.elapsed = value;
         this.play();
     }

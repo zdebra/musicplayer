@@ -70,9 +70,24 @@ export default class MainFrame extends React.Component {
 
     }
 
+    timeToRead(value) {
+        // value in miliseconds
+        let seconds = Math.round(value/1000);
+        let minutes = Math.floor(seconds/60);
+        let secondsLeft = seconds - (minutes*60);
+        if(secondsLeft < 10) {
+            secondsLeft = `0${secondsLeft}`;
+        }
+        return `${minutes}:${secondsLeft}`;
+    }
+
     render() {
 
         var bLabel = (this.audioService.stopped || this.audioService.paused) ? <span className="glyphicon glyphicon-play" aria-hidden="true"/> : <span className="glyphicon glyphicon-pause" aria-hidden="true"/>;
+
+        var cur = this.audioService.getCurrentTime();
+        var final = this.audioService.getDuration();
+        var left = this.audioService.getDuration() - this.audioService.getCurrentTime();
 
         return(
 
@@ -88,6 +103,11 @@ export default class MainFrame extends React.Component {
                         <Button onClick={this.playPause.bind(this)}>{bLabel}</Button>
                     </ButtonGroup>
                 </ButtonToolbar>
+                <div>
+                    Current time: {this.timeToRead(cur)}<br/>
+                    Final time: {this.timeToRead(final)}<br />
+                    Time left: {this.timeToRead(left)} <br/>
+                </div>
             </div>
         );
     }
