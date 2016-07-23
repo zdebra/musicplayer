@@ -81,20 +81,27 @@ export default class AudioService {
             this.load(this.songsURIs[this.songIndex]);
         } else {
 
-            this.sourceNode = this.context.createBufferSource();
-            this.sourceNode.connect(this.context.destination);
-            this.sourceNode.buffer = this.buffer;
+            if(this.paused || this.stopped) {
+
+                this.sourceNode = this.context.createBufferSource();
+                this.sourceNode.connect(this.context.destination);
+                this.sourceNode.buffer = this.buffer;
 
 
-            if (this.paused) {
-                this.sourceNode.start(0, this.getCurrentTime()/1000);
+                if (this.paused) {
+                    this.sourceNode.start(0, this.getCurrentTime()/1000);
+                }
+                else {
+                    this.sourceNode.start(0);
+                }
+
+                this.paused = false;
+                this.stopped = false;
+            } else {
+                // pressing play again
+                this.stop();
+                this.play();
             }
-            else {
-                this.sourceNode.start(0);
-            }
-
-            this.paused = false;
-            this.stopped = false;
 
         }
 
