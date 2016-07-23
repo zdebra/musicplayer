@@ -72,30 +72,22 @@ export default class MainFrame extends React.Component {
 
     render() {
 
-        var divStyle = {
-            'marginLeft': '300px',
-            'marginRight': '100px'
-        }
-
-        var bLabel = (this.audioService.stopped || this.audioService.paused) ? "play" : "pause";
+        var bLabel = (this.audioService.stopped || this.audioService.paused) ? <span className="glyphicon glyphicon-play" aria-hidden="true"/> : <span className="glyphicon glyphicon-pause" aria-hidden="true"/>;
 
         return(
 
             <div>
                 <ProgressBar now={this.state.progress} bsStyle="info" onClick={this.progressClick.bind(this)}/>
                 <ButtonToolbar>
-                    <ButtonGroup bsSize="xsmall">
-                        <Button onClick={this.pause.bind(this)}>Pause</Button>
-                        <Button onClick={this.play.bind(this)}>Play</Button>
-                        <Button onClick={this.stop.bind(this)}>Stop</Button>
-                        <Button onClick={this.next.bind(this)}>Next</Button>
-                        <Button onClick={this.prev.bind(this)}>Prev</Button>
+                    <ButtonGroup bsSize="small">
+                        <Button onClick={this.pause.bind(this)}><span className="glyphicon glyphicon-pause" aria-hidden="true"/></Button>
+                        <Button onClick={this.play.bind(this)}><span className="glyphicon glyphicon-play" aria-hidden="true"/></Button>
+                        <Button onClick={this.stop.bind(this)}><span className="glyphicon glyphicon-stop" aria-hidden="true"/></Button>
+                        <Button onClick={this.next.bind(this)}><span className="glyphicon glyphicon-step-forward" aria-hidden="true"/></Button>
+                        <Button onClick={this.prev.bind(this)}><span className="glyphicon glyphicon-step-backward" aria-hidden="true"/></Button>
                         <Button onClick={this.playPause.bind(this)}>{bLabel}</Button>
                     </ButtonGroup>
                 </ButtonToolbar>
-                <div style={divStyle}>
-                    <ProgressBar now={this.state.progress} bsStyle="info" onClick={this.progressClick.bind(this)}/>
-                </div>
             </div>
         );
     }
