@@ -115,12 +115,10 @@ export default class MainFrame extends React.Component {
                 <ProgressBar now={this.state.progress} bsStyle="info" onClick={this.progressClick.bind(this)}/>
                 <ButtonToolbar>
                     <ButtonGroup bsSize="small">
-                        <Button onClick={this.pause.bind(this)}><span className="glyphicon glyphicon-pause" aria-hidden="true"/></Button>
-                        <Button onClick={this.play.bind(this)}><span className="glyphicon glyphicon-play" aria-hidden="true"/></Button>
-                        <Button onClick={this.stop.bind(this)}><span className="glyphicon glyphicon-stop" aria-hidden="true"/></Button>
-                        <Button onClick={this.next.bind(this)}><span className="glyphicon glyphicon-step-forward" aria-hidden="true"/></Button>
-                        <Button onClick={this.prev.bind(this)}><span className="glyphicon glyphicon-step-backward" aria-hidden="true"/></Button>
                         <Button onClick={this.playPause.bind(this)}>{bLabel}</Button>
+                        <Button onClick={this.prev.bind(this)}><span className="glyphicon glyphicon-step-backward" aria-hidden="true"/></Button>
+                        <Button onClick={this.next.bind(this)}><span className="glyphicon glyphicon-step-forward" aria-hidden="true"/></Button>
+                        <Button onClick={this.stop.bind(this)}><span className="glyphicon glyphicon-stop" aria-hidden="true"/></Button>
                     </ButtonGroup>
                 </ButtonToolbar>
                 <div>

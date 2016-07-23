@@ -131,11 +131,9 @@ export default class AudioService {
     }
 
     stop() {
-        this.sourceNode.stop();
-        this.paused = false;
         this.stopped = true;
         this.elapsed = 0;
-
+        this.pause();
     }
 
     pause() {
@@ -148,10 +146,7 @@ export default class AudioService {
         if(this.buffer === null) {
             return 0;
         }
-
-        var percent = (this.getCurrentTime()/this.getDuration())*100;
-
-        return percent;
+        return (this.getCurrentTime()/this.getDuration())*100;
     }
 
     getDuration() {
