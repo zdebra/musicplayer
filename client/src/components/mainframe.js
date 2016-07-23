@@ -10,12 +10,30 @@ export default class MainFrame extends React.Component {
     constructor(props) {
         super(props);
 
-        this.audioService = new AudioService([
-            "http://localhost:3000/music/rhcp",
-            "http://localhost:3000/music/hives",
-            "http://localhost:3000/music/pz",
-            "http://localhost:3000/music/vagina"
-        ]);
+        var musicList = [
+            {
+                url:"http://localhost:3000/music/rhcp",
+                name: "RHCP - Under the Bridge",
+                time: 564065
+            },
+            {
+                url:"http://localhost:3000/music/hives",
+                name: "The Hives - Hate to say I told you so",
+                time: 464065
+            },
+            {
+                url:"http://localhost:3000/music/pz",
+                name: "Paralelní Zapojení - Pěna",
+                time: 664065
+            },
+            {
+                url:"http://localhost:3000/music/vagina",
+                name: "Vagína - Las Chubas",
+                time: 264065
+            }
+        ];
+
+        this.audioService = new AudioService(musicList);
 
         this.state = {progress: this.audioService.getProgress()};
         this.tick = this.tick.bind(this);
@@ -88,10 +106,12 @@ export default class MainFrame extends React.Component {
         var cur = this.audioService.getCurrentTime();
         var final = this.audioService.getDuration();
         var left = this.audioService.getDuration() - this.audioService.getCurrentTime();
+        var songName = this.audioService.getCurrentSongName();
 
         return(
 
             <div>
+                {songName}
                 <ProgressBar now={this.state.progress} bsStyle="info" onClick={this.progressClick.bind(this)}/>
                 <ButtonToolbar>
                     <ButtonGroup bsSize="small">

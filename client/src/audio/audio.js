@@ -57,10 +57,10 @@ export default class AudioService {
     }
 
 
-    load(url) {
+    load(file) {
 
         var request = new XMLHttpRequest();
-        request.open('GET', url, true);
+        request.open('GET', file.url, true);
         request.responseType = 'arraybuffer';
         request.onload = () => {
             this.context.decodeAudioData(request.response, (buffer) => {
@@ -171,6 +171,10 @@ export default class AudioService {
         }
         this.elapsed = value;
         this.play();
+    }
+
+    getCurrentSongName() {
+        return this.songsURIs[this.songIndex].name;
     }
 
 
