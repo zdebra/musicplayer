@@ -53,11 +53,27 @@ export default class MainFrame extends React.Component {
         this.audioService.jumpTo(this.audioService.getDuration()*0.95);
     }
 
+    progressClick(e) {
+
+        let x = e.pageX - e.target.offsetLeft;
+        let elWidth = e.target.offsetWidth;
+
+        let posPercent = x/elWidth;
+
+        this.audioService.jumpTo(this.audioService.getDuration()*posPercent);
+
+    }
+
     render() {
+
+        var divStyle = {
+            'marginLeft': '300px',
+            'marginRight': '100px'
+        }
 
         return(
             <div>
-                <ProgressBar now={this.state.progress} label={`${this.state.progress}%`} />
+                <ProgressBar now={this.state.progress} bsStyle="info" onClick={this.progressClick.bind(this)}/>
                 <ButtonToolbar>
                     <Button bsStyle="primary" onClick={this.pause.bind(this)}>Pause</Button>
                     <Button bsStyle="primary" onClick={this.play.bind(this)}>Play</Button>
@@ -66,6 +82,9 @@ export default class MainFrame extends React.Component {
                     <Button bsStyle="primary" onClick={this.prev.bind(this)}>Prev</Button>
                     <Button bsStyle="primary" onClick={this.further.bind(this)}>Further</Button>
                 </ButtonToolbar>
+                <div style={divStyle}>
+                    <ProgressBar now={this.state.progress} bsStyle="info" onClick={this.progressClick.bind(this)}/>
+                </div>
             </div>
         );
     }
