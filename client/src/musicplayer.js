@@ -1,39 +1,20 @@
 import React from 'react';
-import AudioService from './../audio/audio';
+import AudioService from './audio';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import ProgressBar from 'react-bootstrap/lib/ProgressBar';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
-export default class MainFrame extends React.Component {
+export default class MusicPlayer extends React.Component {
 
     constructor(props) {
         super(props);
 
-        var musicList = [
-            {
-                url:"http://localhost:3000/music/rhcp",
-                name: "RHCP - Under the Bridge",
-                time: 564065
-            },
-            {
-                url:"http://localhost:3000/music/hives",
-                name: "The Hives - Hate to say I told you so",
-                time: 464065
-            },
-            {
-                url:"http://localhost:3000/music/pz",
-                name: "Paralelní Zapojení - Pěna",
-                time: 664065
-            },
-            {
-                url:"http://localhost:3000/music/vagina",
-                name: "Vagína - Las Chubas",
-                time: 264065
-            }
-        ];
+        if(this.props.musicList === undefined) {
+            throw new Error("Music list must be provided");
+        }
 
-        this.audioService = new AudioService(musicList);
+        this.audioService = new AudioService(this.props.musicList);
 
         this.state = {progress: this.audioService.getProgress()};
         this.tick = this.tick.bind(this);

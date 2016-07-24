@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MainFrame from './components/mainframe';
+import MusicPlayer from './musicplayer';
 
 
 var divStyle = {
@@ -8,4 +8,27 @@ var divStyle = {
     'marginRight': '100px'
 };
 
-ReactDOM.render(<div style={divStyle}><MainFrame/></div>, document.getElementById("app"));
+var musicList = [
+    {
+        url:"http://localhost:3000/music/rhcp",
+        name: "RHCP - Under the Bridge",
+        time: 564065
+    },
+    {
+        url:"http://localhost:3000/music/hives",
+        name: "The Hives - Hate to say I told you so",
+        time: 464065
+    },
+    {
+        url:"http://localhost:3000/music/pz",
+        name: "Paralelní Zapojení - Pěna",
+        time: 664065
+    },
+    {
+        url:"http://localhost:3000/music/vagina",
+        name: "Vagína - Las Chubas",
+        time: 264065
+    }
+];
+
+ReactDOM.render(<div style={divStyle}><MusicPlayer musicList={musicList}/></div>, document.getElementById("app"));
